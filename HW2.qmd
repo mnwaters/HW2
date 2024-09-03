@@ -1,0 +1,52 @@
+# Homework 2
+
+## Task 1
+
+1. Create vectors for pretreatment data (x) and after treatment data (y)
+
+```{r}
+x <- c(120, 151, 125, 126, 115, 132, 132, 129, 134, 139, 127, 122, 127, 135, 133, 128, 147, 138, 140, 132)
+
+y <- c(127, 145, 135, 122, 115, 122, 123, 126, 126, 129, 132, 146, 120, 114, 121, 120, 128, 120, 133, 115)
+```
+
+2. Assign names to the subjects within each vector
+```{r}
+names(x) <- paste("Subject", 1:20, sep = "_")
+
+names(y) <- paste("Subject", 1:20, sep = "_")
+```
+```{r}
+x
+```
+```{r}
+y
+```
+3. Calculate the change in blood pressure for each patient and save a new vector z
+```{r}
+z <- (y-x)
+z
+```
+4. Calculate the average decrease in blood pressure across all patients. 
+```{r}
+mean(z, trim = 0, na.rm = FALSE)
+```
+
+
+5. Determine which patients experienced a decrease in blood pressure after treatment (a positive change).
+```{r}
+which(z>0)
+```
+
+
+6. Subset the vector of differences to only return those that have a positive change. 
+```{r}
+p <- which(z>0)
+```
+
+
+7. Calculate the average decrease in blood pressure for those where the blood pressure decreased (positive change).
+```{r}
+mean(p, trim = 0, na.rm = FALSE)
+```
+
