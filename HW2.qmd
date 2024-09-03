@@ -1,8 +1,8 @@
 # Homework 2
 
-## Task 1
+## Task 1: Vectors
 
-1. Create vectors for pretreatment data (x) and after treatment data (y)
+1.  Create vectors for pretreatment data (x) and after treatment data (y)
 
 ```{r}
 x <- c(120, 151, 125, 126, 115, 132, 132, 129, 134, 139, 127, 122, 127, 135, 133, 128, 147, 138, 140, 132)
@@ -10,43 +10,131 @@ x <- c(120, 151, 125, 126, 115, 132, 132, 129, 134, 139, 127, 122, 127, 135, 133
 y <- c(127, 145, 135, 122, 115, 122, 123, 126, 126, 129, 132, 146, 120, 114, 121, 120, 128, 120, 133, 115)
 ```
 
-2. Assign names to the subjects within each vector
+2.  Assign names to the subjects within each vector
+
 ```{r}
 names(x) <- paste("Subject", 1:20, sep = "_")
 
 names(y) <- paste("Subject", 1:20, sep = "_")
 ```
+
 ```{r}
 x
 ```
+
 ```{r}
 y
 ```
-3. Calculate the change in blood pressure for each patient and save a new vector z
+
+3.  Calculate the change in blood pressure for each patient and save a new vector z
+
 ```{r}
 z <- (y-x)
 z
 ```
-4. Calculate the average decrease in blood pressure across all patients. 
+
+4.  Calculate the average decrease in blood pressure across all patients.
+
 ```{r}
 mean(z, trim = 0, na.rm = FALSE)
 ```
 
+5.  Determine which patients experienced a decrease in blood pressure after treatment (a positive change).
 
-5. Determine which patients experienced a decrease in blood pressure after treatment (a positive change).
 ```{r}
 which(z>0)
 ```
 
+6.  Subset the vector of differences to only return those that have a positive change.
 
-6. Subset the vector of differences to only return those that have a positive change. 
 ```{r}
 p <- which(z>0)
+p
+```
+
+7.  Calculate the average decrease in blood pressure for those where the blood pressure decreased (positive change).
+
+```{r}
+mean(p, trim = 0, na.rm = FALSE)
+```
+
+## Task 2: Data Frames
+
+1.  Create a data frame object with four columns corresponding to your data above: patient, pre_bp, post_bp, and diff_bp
+
+```{r}
+df <- data.frame("pre_bp" = x, 'post_bp' = y, "diff_bp" = z)
+df
+```
+
+2.  Return only rows of the data frame where the diff_bp column is negative. (Use \[ or learn about the subset() function if you’d like. If you use \[, don’t reference the original vector from the first part, access the column of the data frame to make your comparison with 0.)
+
+    ```{r}
+    subset(df, diff_bp < 0, select = pre_bp:diff_bp, drop = FALSE)
+    df
+    ```
+
+3.  Add a new column to the data frame corresponding to TRUE if the post_bp is less than 120 and FALSE if it is not. Similar to the previous question, don’t reference the original vector from task 1, access the column of the data frame to make your comparison. Recall you can use \$ to access a column. If you reference a column that doesn’t exist and save a vector (of appropriate length in it), that vector becomes a column of your data frame! Use this way of creating the new column.
+
+```{r}
+df$new <- with(df, ifelse(post_bp > 120, 'False', 'True'))
+df
 ```
 
 
-7. Calculate the average decrease in blood pressure for those where the blood pressure decreased (positive change).
+4.  Finally, print the data frame out nicely in your final document by modifying the code below appropriately.
 ```{r}
-mean(p, trim = 0, na.rm = FALSE)
+knitr::kable(df)
+```
+
+
+## Task 3: List Practice
+
+1.  Create a new data frame with this data in it that is similar to the data frame from task 2 (including
+    the new column of TRUE/FALSE values).
+    
+```{r}
+xt <- c(138, 135, 147, 117, 152, 134, 114, 121, 131, 130)
+yt <- c(105, 136, 123, 130, 134, 143, 135, 139, 120, 124)
+names(xt) <- paste("Subject", 1:10, sep = "_")
+names(yt) <- paste("Subject", 1:10, sep = "_")
+zt <- (yt-xt)
+
+dft <- data.frame("pre_t" = xt, 'post_t' = yt, "diff_t" = zt)
+
+dft$newt <- with(dft, ifelse(post_t > 120, 'False', 'True'))
+
+dft
+```
+    
+
+2.  Now create and store a list with two elements:
+    • 1st element named treatment and contains the first data frame you created.
+    • 2nd element named placebo and contains the second data frame you created.
+```{r}
+my_list <- list('treatment' = df, "placebo" = dft)
+my_list
+```
+
+
+
+3.  Access the first list element using three different types of syntax (the result can be a list or just the
+    data frame).
+    
+```{r}
+my_list[1]
+```
+```{r}
+my_list[[1]]
+```
+    
+```{r}
+str(my_list[1])
+```
+
+4.  Use your list from question 2. In one line of code, access the pre_bp column of the placebo data frame.
+
+```{r}
+my_list[[2]][1]
 ```
 
